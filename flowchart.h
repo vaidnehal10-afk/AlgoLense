@@ -1,8 +1,6 @@
 #ifndef FLOWCHART_H
 #define FLOWCHART_H
 
-#include <stdio.h>
-#include <stdlib.h>
 
 // Flowchart queue node
 typedef struct QNode {
