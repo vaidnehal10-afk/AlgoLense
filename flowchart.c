@@ -3,12 +3,6 @@
 #include <string.h>
 #include <math.h>
 #include "flowchart.h"
-// Queue node structure for flowchart steps
-typedef struct QNode {
-    char step[100];
-    struct QNode *next;
-} QNode;
-
 // Function to enqueue a step
 void enqueue(QNode **head, QNode **tail, const char *step) {
     QNode *newNode = (QNode*)malloc(sizeof(QNode));
