@@ -100,36 +100,66 @@ void showVariation(int problem) {
         printf("\n--- OUTPUT ---\n");
         switch(problem) {
             case 1:
-                findGcdLcm(); // Only iterative exists
+                if (varChoice==1) findGcdLcm_A1();
+                else if(varChoice==2) findGcdLcm_A2();
+                else if(varChoice==3) findGcdLcm_A3();
                 break;
             case 2:
-                if(varChoice==1) checkPrime();       // Naive
-                else if(varChoice==2) checkPrimeOptimized(); // Optimized
+                if(varChoice==1) checkPrime_A1();       // Naive
+                else if(varChoice==2) checkPrime_A2(); // Optimized
                 break;
             case 3:
-                if(varChoice==1) factorialIterative();
-                else if(varChoice==2) factorialRecursive();
+                if(varChoice==1) findFactorial_A1();
+                else if(varChoice==2) findFactorial_A2();
+                else if(varChoice==3) findFactorial_A3();
                 break;
             case 4:
-                if(varChoice==1) sumDigitsIterative();
-                else if(varChoice==2) sumDigitsRecursive();
+                if(varChoice==1)sumOfDigits_A1();
+                else if(varChoice==2) sumOfDigits_A2();
                 break;
+            case 5:
+                if(varChoice==1)checkArmstrong_A1();
+                else if(varChoice==2) checkArmstrong_A2();
+                break;
+            case 6:
+                if(varChoice==1)checkAnagram_A1();
+                else if(varChoice==2) checkAnagram_A2();
+                break;
+             case 7:
+                if(varChoice==1)firstNonRepeatingChar_A1();
+                else if(varChoice==2) firstNonRepeatingChar_A2();
+                break;
+            
             case 8:
-                if(varChoice==1) removeDuplicatesExtraArray();
-                else if(varChoice==2) removeDuplicatesTwoPointer();
+                if(varChoice==1)  removeDuplicates_A1();
+                else if(varChoice==2)  removeDuplicates_A2();
                 break;
             case 9:
-                if(varChoice==1) secondLargestLinear();
-                else if(varChoice==2) secondLargestSorting();
+                if(varChoice==1) secondLargest_A1();
+                else if(varChoice==2) secondLargest_A2() ;
                 break;
+             case 10:
+                if(varChoice==1) findPairsWithSum_A1();
+                else if(varChoice==2)findPairsWithSum_A2() ;
+                break;
+             case 11:
+                if(varChoice==1) checkBalancedParentheses_A1();
+                else if(varChoice==2)checkBalancedParentheses_A2() ;
+                break;
+            
             case 12:
-                if(varChoice==1) reverseLinkedListIterative();
-                else if(varChoice==2) reverseLinkedListRecursive();
+                if(varChoice==1) reverseLinkedList_A1 ();
+                else if(varChoice==2) reverseLinkedList_A2();
+                break;
+             case 13:
+                if(varChoice==1)  findMiddleNode_A1();
+                else if(varChoice==2)  findMiddleNode_A2();
                 break;
             case 14:
-                if(varChoice==1) mergeSortedListsIterative();
-                else if(varChoice==2) mergeSortedListsRecursive();
+                if(varChoice==1) mergeSortedLists_A1() ;
+                else if(varChoice==2)mergeSortedLists_A2() ;
                 break;
+            
             default:
                 printf("Variation not implemented yet.\n");
         }
