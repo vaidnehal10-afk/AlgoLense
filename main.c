@@ -159,6 +159,32 @@ void showVariation(int problem) {
                 if(varChoice==1) mergeSortedLists_A1() ;
                 else if(varChoice==2)mergeSortedLists_A2() ;
                 break;
+            case 15:
+                if(varChoice==1) queueUsingStacks_A1() ;
+                else if(varChoice==2) queueUsingStacks_A2() ;
+                break;
+            case 16:
+                if(varChoice==1) kruskal_qsort_A1() ;
+                else if(varChoice==2) kruskal_heap_A2() ;
+                break;
+            case 17:
+                if(varChoice==1) storeWeightedGraph_A1() ;
+                else if(varChoice==2)storeWeightedGraph_A2() ;
+                break;
+             case 18:
+                if(varChoice==1) bst_count_leaves_A1() ;
+                else if(varChoice==2)bst_count_leaves_A2() ;
+                break;
+             case 19:
+                if(varChoice==1) inorder_A1(root) ;
+                else if(varChoice==2)inorder_A2(root) ;
+                else if(varChoice==3)inorder_A3(root);
+                break;
+             case 20:
+                if(varChoice==1) int x= isCyclicDFS_A1(int **g, int V) ;
+                else if(varChoice==2)int y=isCyclicUF_A3(int edges[][2], int V, int E) 
+                break;
+            
             
             default:
                 printf("Variation not implemented yet.\n");
@@ -185,6 +211,12 @@ void showComplexity(int problem) {
         case 13: printf("Middle Node: Time O(n), Space O(1)\n"); break;
         case 14: printf("Merge Sorted Linked List: Time O(n+m), Space O(1)\n"); break;
         case 15: printf("Queue using Two Stacks: Time O(1) amortized enqueue/dequeue, Space O(n)\n"); break;
+        case 16: printf("Kruskal Algorithm: Find MST of a graph, Time O(E log E), Space O(V+E)\n"); break;
+        case 17: printf("Store Weighted Graph: Using Array-of-Pointers + Linked Lists, Time O(V+E), Space O(V+E)\n"); break;
+        case 18: printf("BST Operations: Create BST and Count Number of Leaf Nodes, Time O(n), Space O(n)\n"); break;
+        case 19: printf("Binary Tree Traversals: Inorder, Preorder, Postorder, Time O(n), Space O(h) recursive / O(n) iterative\n"); break;
+        case 20: printf("Detect Cycle in Graph: Using DFS or Union-Find, Time O(V+E), Space O(V)\n"); break;
+
         default: printf("Complexity not available.\n");
     }
 }
