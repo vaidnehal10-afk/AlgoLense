@@ -28,21 +28,53 @@ void displayFlowchart(int choice) {
     QNode *head = NULL, *tail = NULL;
 
     switch(choice) {
+           switch(choice) {
         case 1: show_flowchart_gcd_iterative(&head, &tail); break;
         case 2: show_flowchart_gcd_recursive(&head, &tail); break;
-        case 3: show_flowchart_prime_naive(&head, &tail); break;
-        case 4: show_flowchart_prime_optimized(&head, &tail); break;
-        case 5: show_flowchart_factorial_iterative(&head, &tail); break;
-        case 6: show_flowchart_factorial_recursive(&head, &tail); break;
-        case 7: show_flowchart_sum_digits_iterative(&head, &tail); break;
-        case 8: show_flowchart_sum_digits_recursive(&head, &tail); break;
-        case 9: show_flowchart_armstrong(&head, &tail); break;
-        case 10: show_flowchart_anagram(&head, &tail); break;
-        case 11: show_flowchart_first_nonrepeat(&head, &tail); break;
-        case 12: show_flowchart_remove_duplicates(&head, &tail); break;
-        case 13: show_flowchart_remove_duplicates_two_pointer(&head, &tail); break;
-        case 14: show_flowchart_second_largest(&head, &tail); break;
-        case 15: show_flowchart_second_largest_sorting(&head, &tail); break;
+        case 3: show_flowchart_binary_gcd(&head, &tail); break;
+        case 4: show_flowchart_prime_naive(&head, &tail); break;
+        case 5: show_flowchart_prime_optimized(&head, &tail); break;
+        case 6: show_flowchart_factorial_iterative(&head, &tail); break;
+        case 7: show_flowchart_factorial_recursive(&head, &tail); break;
+        case 8: show_flowchart_factorial_A3(&head, &tail); break;
+        case 9: show_flowchart_sum_digits_iterative(&head, &tail); break;
+        case 10: show_flowchart_sum_digits_recursive(&head, &tail); break;
+        case 11: show_flowchart_armstrong(&head, &tail); break;
+        case 12: show_flowchart_armstrong_recursive(&head, &tail); break;
+        case 13: show_flowchart_anagram(&head, &tail); break;
+        case 14: show_flowchart_anagram_A2(&head, &tail); break;
+        case 15: show_flowchart_first_nonrepeat(&head, &tail); break;
+        case 16: show_flowchart_firstNonRepeatingChar_A2(&head, &tail); break;
+        case 17: show_flowchart_remove_duplicates(&head, &tail); break;
+        case 18: show_flowchart_remove_duplicates_two_pointer(&head, &tail); break;
+        case 19: show_flowchart_second_largest(&head, &tail); break;
+        case 20: show_flowchart_second_largest_sorting(&head, &tail); break;
+        case 21: show_flowchart_pairs_sum(&head, &tail); break;
+        case 22: show_flowchart_findPairsWithSum_A2(&head, &tail); break;
+        case 23: show_flowchart_balanced_parentheses(&head, &tail); break;
+        case 24: show_flowchart_checkBalancedParentheses_A2(&head, &tail); break;
+        case 25: show_flowchart_reverse_sll_iterative(&head, &tail); break;
+        case 26: show_flowchart_reverse_sll_recursive(&head, &tail); break;
+        case 27: show_flowchart_middle_node(&head, &tail); break;
+        case 28: show_flowchart_findMiddleNode_A2(&head, &tail); break;
+        case 29: show_flowchart_merge_sorted_ll(&head, &tail); break;
+        case 30: show_flowchart_mergeSortedLists_A2(&head, &tail); break;
+        case 31: show_flowchart_queue_two_stacks_A1(&head, &tail); break;
+        case 32: show_flowchart_queue_two_stacks_A2(&head, &tail); break;
+        case 33: show_flowchart_kruskal(&head, &tail); break;
+        case 34: show_flowchart_kruskal_heap(&head, &tail); break;
+        case 35: show_flowchart_storeWeightedGraph_A1(&head, &tail); break;
+        case 36: show_flowchart_storeWeightedGraph_A2(&head, &tail); break;
+        case 37: show_flowchart_bst_count_leaves(&head, &tail); break;
+        case 38: show_flowchart_bst_count_leaves_iter(&head, &tail); break;
+        case 39: show_flowchart_inorder_A1(&head, &tail); break;
+        case 40: show_flowchart_inorder_A2(&head, &tail); break;
+        case 41: show_flowchart_preorder_A3(&head, &tail); break;
+        case 42: show_flowchart_dfsCycle_A1(&head, &tail); break;
+        case 43: show_flowchart_isCyclicUF_A3(&head, &tail); break;
+        default: printf("Invalid choice! Please try again.\n");
+    }
+
 
         default:
             printf("Invalid choice\n");
@@ -786,5 +818,6 @@ void show_flowchart_isCyclicUF_A3(QNode **h, QNode **t) {
     enqueue(h, t, "RETURN 0 (No Cycle Found)");
     enqueue(h, t, "Stop");
 }
+
 
 
