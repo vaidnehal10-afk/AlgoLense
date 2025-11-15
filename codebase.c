@@ -1193,7 +1193,33 @@ int isCyclicDFS_A1(int **g, int V) {
     }
     return 0;
 }
-/* Approach 2: Union-Find (for undirected graph) */
+
+/* Approach 2: Kahn's algorithm (BFS for DAG) */
+int isCyclicKahn_A2(int **g, int V) {
+    int in_deg[V];
+    for(int i=0;i<V;i++) in_deg[i]=0;
+    for(int u=0;u<V;u++)
+        for(int v=0;v<V;v++)
+            if(g[u][v]) in_deg[v]++;
+
+    int queue[V], front=0, rear=0;
+    for(int i=0;i<V;i++) if(in_deg[i]==0) queue[rear++] = i;
+
+    int cnt=0;
+    while(front<rear){
+        int u = queue[front++];
+        cnt++;
+        for(int v=0;v<V;v++){
+            if(g[u][v]){
+                in_deg[v]--;
+                if(in_deg[v]==0) queue[rear++] = v;
+            }
+        }
+    }
+    return cnt != V;
+}
+
+/* Approach 3: Union-Find (for undirected graph) */
 int findUF_A3(int parent[], int i){
     if(parent[i]==-1) return i;
     return parent[i]=findUF_A3(parent,parent[i]);
