@@ -1,10 +1,11 @@
+// main.c
 #include <stdio.h>
 #include "codebase.h"
 #include "flowchart.h"
 
 // Function to display problem descriptions
 void showProblemDescription(int problem) {
-    switch(problem) {
+    switch (problem) {
         case 1:
             printf("\nProblem 1: Find GCD and LCM\n");
             printf("Description: Calculate the Greatest Common Divisor and Least Common Multiple of two integers.\n");
@@ -15,7 +16,7 @@ void showProblemDescription(int problem) {
             break;
         case 3:
             printf("\nProblem 3: Factorial\n");
-            printf("Description: Calculate factorial of a number using iterative or recursive approach.\n");
+            printf("Description: Calculate factorial of a number using iterative / recursive / big-integer approach.\n");
             break;
         case 4:
             printf("\nProblem 4: Sum of Digits\n");
@@ -23,11 +24,11 @@ void showProblemDescription(int problem) {
             break;
         case 5:
             printf("\nProblem 5: Check Armstrong Number\n");
-            printf("Description: Determine if a number is an Armstrong number.\n");
+            printf("Description: Determine if a number is an Armstrong number (3-digit / n-digit).\n");
             break;
         case 6:
             printf("\nProblem 6: Check if Two Strings are Anagrams\n");
-            printf("Description: Determine if two strings are anagrams of each other.\n");
+            printf("Description: Check whether two strings are anagrams of each other.\n");
             break;
         case 7:
             printf("\nProblem 7: Find First Non-Repeating Character\n");
@@ -39,7 +40,7 @@ void showProblemDescription(int problem) {
             break;
         case 9:
             printf("\nProblem 9: Find Second Largest in Array\n");
-            printf("Description: Find the second largest element in an array.\n");
+            printf("Description: Find the second largest distinct element in an array.\n");
             break;
         case 10:
             printf("\nProblem 10: Find All Pairs with Given Sum\n");
@@ -55,15 +56,35 @@ void showProblemDescription(int problem) {
             break;
         case 13:
             printf("\nProblem 13: Find Middle Node of Linked List\n");
-            printf("Description: Find the middle node of a singly linked list using two-pointer or counting method.\n");
+            printf("Description: Find the middle node of a singly linked list.\n");
             break;
         case 14:
             printf("\nProblem 14: Merge Two Sorted Linked Lists\n");
-            printf("Description: Merge two sorted linked lists into a single sorted list iteratively or recursively.\n");
+            printf("Description: Merge two sorted linked lists into a single sorted list.\n");
             break;
         case 15:
             printf("\nProblem 15: Implement Queue Using Two Stacks\n");
             printf("Description: Implement queue operations using two stacks.\n");
+            break;
+        case 16:
+            printf("\nProblem 16: Kruskal Algorithm\n");
+            printf("Description: Find Minimum Spanning Tree (MST) of a graph using Kruskal.\n");
+            break;
+        case 17:
+            printf("\nProblem 17: Store Weighted Graph\n");
+            printf("Description: Store weighted graph using adjacency list (array of pointers / tail pointers).\n");
+            break;
+        case 18:
+            printf("\nProblem 18: Create BST and Count Leaf Nodes\n");
+            printf("Description: Create a Binary Search Tree and count number of leaf nodes.\n");
+            break;
+        case 19:
+            printf("\nProblem 19: Binary Tree Traversals\n");
+            printf("Description: Perform inorder (recursive / iterative) and preorder traversal of a binary tree.\n");
+            break;
+        case 20:
+            printf("\nProblem 20: Detect Cycle in Graph\n");
+            printf("Description: Detect cycle in a graph using DFS (directed) or Union-Find (undirected).\n");
             break;
         default:
             printf("Problem description not available.\n");
@@ -73,150 +94,236 @@ void showProblemDescription(int problem) {
 // Function to show variations menu
 void showVariation(int problem) {
     int varChoice;
-    while(1) {
+    while (1) {
         printf("\n--- Variations ---\n");
-        switch(problem) {
+        switch (problem) {
             case 1:
-                printf("1. Iterative\n");
+                printf("1. Euclidean (Iterative)\n");
+                printf("2. Euclidean (Recursive)\n");
+                printf("3. Binary GCD (Stein)\n");
                 break;
             case 2:
-                printf("1. Naive\n2. Optimized\n");
+                printf("1. Simple sqrt check\n");
+                printf("2. 6k ± 1 optimization\n");
                 break;
-            case 3: case 4:
-                printf("1. Iterative\n2. Recursive\n");
+            case 3:
+                printf("1. Iterative (long long)\n");
+                printf("2. Recursive (long long)\n");
+                printf("3. Big integer using array\n");
                 break;
-            case 8: case 9: case 12: case 14:
-                printf("1. Iterative\n2. Recursive\n");
+            case 4:
+                printf("1. Iterative\n");
+                printf("2. Recursive\n");
+                break;
+            case 5:
+                printf("1. Classic 3-digit Armstrong\n");
+                printf("2. General n-digit Armstrong\n");
+                break;
+            case 6:
+                printf("1. Frequency array\n");
+                printf("2. Sort & compare\n");
+                break;
+            case 7:
+                printf("1. Frequency then scan\n");
+                printf("2. Index array approach\n");
+                break;
+            case 8:
+                printf("1. O(n^2) – preserve order\n");
+                printf("2. Sort & unique\n");
+                break;
+            case 9:
+                printf("1. Single-pass tracking\n");
+                printf("2. Sort & pick from end\n");
+                break;
+            case 10:
+                printf("1. Brute-force O(n^2)\n");
+                printf("2. Sort + two-pointer\n");
+                break;
+            case 11:
+                printf("1. Only () parentheses\n");
+                printf("2. (), {}, [] parentheses\n");
+                break;
+            case 12:
+                printf("1. Iterative reverse\n");
+                printf("2. Recursive reverse\n");
+                break;
+            case 13:
+                printf("1. Slow/Fast pointers\n");
+                printf("2. Two-pass counting\n");
+                break;
+            case 14:
+                printf("1. Linked list merge\n");
+                printf("2. Array-based merge\n");
+                break;
+            case 15:
+                printf("1. Interactive queue menu\n");
+                printf("2. Operation-based queue\n");
+                break;
+            case 16:
+                printf("1. Kruskal using qsort + DSU\n");
+                printf("2. Kruskal using Min-Heap + DSU\n");
+                break;
+            case 17:
+                printf("1. Adjacency list (basic)\n");
+                printf("2. Adjacency list with tail pointer\n");
+                break;
+            case 18:
+                printf("1. BST insert + recursive leaf count\n");
+                printf("2. BST insert + iterative leaf count\n");
+                break;
+            case 19:
+                printf("1. Inorder (recursive)\n");
+                printf("2. Inorder (iterative)\n");
+                printf("3. Preorder (recursive)\n");
+                break;
+            case 20:
+                printf("1. Cycle detection using DFS (directed, adjacency matrix)\n");
+                printf("2. Cycle detection using Union-Find (undirected, edge list)\n");
                 break;
             default:
-                printf("No variations available\n");
+                printf("No variations available.\n");
                 return;
         }
         printf("0. Back\n");
         printf("Enter choice: ");
-        scanf("%d", &varChoice);
-        if(varChoice == 0) break;
+        if (scanf("%d", &varChoice) != 1) return;
+        if (varChoice == 0) break;
 
         printf("\n--- OUTPUT ---\n");
-        switch(problem) {
+        switch (problem) {
             case 1:
-                if (varChoice==1) findGcdLcm_A1();
-                else if(varChoice==2) findGcdLcm_A2();
-                else if(varChoice==3) findGcdLcm_A3();
+                if      (varChoice == 1) findGcdLcm_A1();
+                else if (varChoice == 2) findGcdLcm_A2();
+                else if (varChoice == 3) findGcdLcm_A3();
+                else printf("Invalid variation!\n");
                 break;
             case 2:
-                if(varChoice==1) checkPrime_A1();       // Naive
-                else if(varChoice==2) checkPrime_A2(); // Optimized
+                if      (varChoice == 1) checkPrime_A1();
+                else if (varChoice == 2) checkPrime_A2();
+                else printf("Invalid variation!\n");
                 break;
             case 3:
-                if(varChoice==1) findFactorial_A1();
-                else if(varChoice==2) findFactorial_A2();
-                else if(varChoice==3) findFactorial_A3();
+                if      (varChoice == 1) findFactorial_A1();
+                else if (varChoice == 2) findFactorial_A2();
+                else if (varChoice == 3) findFactorial_A3();
+                else printf("Invalid variation!\n");
                 break;
             case 4:
-                if(varChoice==1)sumOfDigits_A1();
-                else if(varChoice==2) sumOfDigits_A2();
+                if      (varChoice == 1) sumOfDigits_A1();
+                else if (varChoice == 2) sumOfDigits_A2();
+                else printf("Invalid variation!\n");
                 break;
             case 5:
-                if(varChoice==1)checkArmstrong_A1();
-                else if(varChoice==2) checkArmstrong_A2();
+                if      (varChoice == 1) checkArmstrong_A1();
+                else if (varChoice == 2) checkArmstrong_A2();
+                else printf("Invalid variation!\n");
                 break;
             case 6:
-                if(varChoice==1)checkAnagram_A1();
-                else if(varChoice==2) checkAnagram_A2();
+                if      (varChoice == 1) checkAnagram_A1();
+                else if (varChoice == 2) checkAnagram_A2();
+                else printf("Invalid variation!\n");
                 break;
-             case 7:
-                if(varChoice==1)firstNonRepeatingChar_A1();
-                else if(varChoice==2) firstNonRepeatingChar_A2();
+            case 7:
+                if      (varChoice == 1) firstNonRepeatingChar_A1();
+                else if (varChoice == 2) firstNonRepeatingChar_A2();
+                else printf("Invalid variation!\n");
                 break;
-            
             case 8:
-                if(varChoice==1)  removeDuplicates_A1();
-                else if(varChoice==2)  removeDuplicates_A2();
+                if      (varChoice == 1) removeDuplicates_A1();
+                else if (varChoice == 2) removeDuplicates_A2();
+                else printf("Invalid variation!\n");
                 break;
             case 9:
-                if(varChoice==1) secondLargest_A1();
-                else if(varChoice==2) secondLargest_A2() ;
+                if      (varChoice == 1) secondLargest_A1();
+                else if (varChoice == 2) secondLargest_A2();
+                else printf("Invalid variation!\n");
                 break;
-             case 10:
-                if(varChoice==1) findPairsWithSum_A1();
-                else if(varChoice==2)findPairsWithSum_A2() ;
+            case 10:
+                if      (varChoice == 1) findPairsWithSum_A1();
+                else if (varChoice == 2) findPairsWithSum_A2();
+                else printf("Invalid variation!\n");
                 break;
-             case 11:
-                if(varChoice==1) checkBalancedParentheses_A1();
-                else if(varChoice==2)checkBalancedParentheses_A2() ;
+            case 11:
+                if      (varChoice == 1) checkBalancedParentheses_A1();
+                else if (varChoice == 2) checkBalancedParentheses_A2();
+                else printf("Invalid variation!\n");
                 break;
-            
             case 12:
-                if(varChoice==1) reverseLinkedList_A1 ();
-                else if(varChoice==2) reverseLinkedList_A2();
+                if      (varChoice == 1) reverseLinkedList_A1();
+                else if (varChoice == 2) reverseLinkedList_A2();
+                else printf("Invalid variation!\n");
                 break;
-             case 13:
-                if(varChoice==1)  findMiddleNode_A1();
-                else if(varChoice==2)  findMiddleNode_A2();
+            case 13:
+                if      (varChoice == 1) findMiddleNode_A1();
+                else if (varChoice == 2) findMiddleNode_A2();
+                else printf("Invalid variation!\n");
                 break;
             case 14:
-                if(varChoice==1) mergeSortedLists_A1() ;
-                else if(varChoice==2)mergeSortedLists_A2() ;
+                if      (varChoice == 1) mergeSortedLists_A1();
+                else if (varChoice == 2) mergeSortedLists_A2();
+                else printf("Invalid variation!\n");
                 break;
             case 15:
-                if(varChoice==1) queueUsingStacks_A1() ;
-                else if(varChoice==2) queueUsingStacks_A2() ;
+                if      (varChoice == 1) queueUsingStacks_A1();
+                else if (varChoice == 2) queueUsingStacks_A2();
+                else printf("Invalid variation!\n");
                 break;
             case 16:
-                if(varChoice==1) kruskal_qsort_A1() ;
-                else if(varChoice==2) kruskal_heap_A2() ;
+                if      (varChoice == 1) kruskal_qsort_A1();
+                else if (varChoice == 2) kruskal_heap_A2();
+                else printf("Invalid variation!\n");
                 break;
             case 17:
-                if(varChoice==1) storeWeightedGraph_A1() ;
-                else if(varChoice==2)storeWeightedGraph_A2() ;
+                if      (varChoice == 1) storeWeightedGraph_A1();
+                else if (varChoice == 2) storeWeightedGraph_A2();
+                else printf("Invalid variation!\n");
                 break;
-             case 18:
-                if(varChoice==1) bst_count_leaves_A1() ;
-                else if(varChoice==2)bst_count_leaves_A2() ;
+            case 18:
+                if      (varChoice == 1) bst_count_leaves_A1();
+                else if (varChoice == 2) bst_count_leaves_A2();
+                else printf("Invalid variation!\n");
                 break;
-             case 19:
-                if(varChoice==1) inorder_A1(root) ;
-                else if(varChoice==2)inorder_A2(root) ;
-                else if(varChoice==3)inorder_A3(root);
+            case 19:
+                if      (varChoice == 1) treeTraversal_A1();
+                else if (varChoice == 2) treeTraversal_A2();
+                else if (varChoice == 3) treeTraversal_A3();
+                else printf("Invalid variation!\n");
                 break;
-             case 20:
-                if(varChoice==1) int x= isCyclicDFS_A1(int **g, int V) ;
-                else if(varChoice==2)int y=isCyclicUF_A3(int edges[][2], int V, int E) 
+            case 20:
+                if      (varChoice == 1) detectCycle_A1();
+                else if (varChoice == 2) detectCycle_A2();
+                else printf("Invalid variation!\n");
                 break;
-            
-            
             default:
                 printf("Variation not implemented yet.\n");
         }
     }
 }
 
-// Placeholder for time/space complexity
+// Time/space complexity
 void showComplexity(int problem) {
     printf("\n--- Time and Space Complexity ---\n");
-    switch(problem) {
-        case 1: printf("GCD & LCM: Time O(log min(a,b)), Space O(1)\n"); break;
-        case 2: printf("Prime (Naive): Time O(n), Optimized: O(sqrt(n)), Space O(1)\n"); break;
-        case 3: printf("Factorial: Iterative O(n), Recursive O(n), Space Iterative O(1), Recursive O(n)\n"); break;
-        case 4: printf("Sum of Digits: Iterative O(log n), Recursive O(log n), Space O(1) / O(log n)\n"); break;
-        case 5: printf("Armstrong: Time O(log n), Space O(1)\n"); break;
-        case 6: printf("Anagram: Time O(n + m), Space O(256)\n"); break;
-        case 7: printf("First Non-Repeating Char: Time O(n), Space O(256)\n"); break;
-        case 8: printf("Remove Duplicates: Time O(n^2) / O(n), Space O(n)\n"); break;
-        case 9: printf("Second Largest: Time O(n) / O(n log n), Space O(1)\n"); break;
-        case 10: printf("Pairs with Sum: Time O(n^2), Space O(1)\n"); break;
+    switch (problem) {
+        case 1:  printf("GCD & LCM: Time O(log min(a,b)), Space O(1)\n"); break;
+        case 2:  printf("Prime (Naive): O(n), Optimized: O(sqrt(n)), Space O(1)\n"); break;
+        case 3:  printf("Factorial: Iter/Rec O(n), Space O(1)/O(n), Big-int: O(n^2) roughly\n"); break;
+        case 4:  printf("Sum of Digits: Time O(log10 n), Space O(1) or O(log n)\n"); break;
+        case 5:  printf("Armstrong: Time O(d) where d = digits, Space O(1)\n"); break;
+        case 6:  printf("Anagram: Time O(n + m) or O(n log n), Space O(1)/O(k)\n"); break;
+        case 7:  printf("First Non-Repeating Char: Time O(n), Space O(1) (fixed alphabet)\n"); break;
+        case 8:  printf("Remove Duplicates: O(n^2) or O(n log n), Space O(1)/O(n)\n"); break;
+        case 9:  printf("Second Largest: O(n) or O(n log n), Space O(1)\n"); break;
+        case 10: printf("Pairs with Sum: O(n^2) or O(n log n), Space O(1)\n"); break;
         case 11: printf("Balanced Parentheses: Time O(n), Space O(n)\n"); break;
-        case 12: printf("Reverse Linked List: Time O(n), Space O(1) / O(n)\n"); break;
+        case 12: printf("Reverse Linked List: Time O(n), Space O(1)/O(n)\n"); break;
         case 13: printf("Middle Node: Time O(n), Space O(1)\n"); break;
-        case 14: printf("Merge Sorted Linked List: Time O(n+m), Space O(1)\n"); break;
-        case 15: printf("Queue using Two Stacks: Time O(1) amortized enqueue/dequeue, Space O(n)\n"); break;
-        case 16: printf("Kruskal Algorithm: Find MST of a graph, Time O(E log E), Space O(V+E)\n"); break;
-        case 17: printf("Store Weighted Graph: Using Array-of-Pointers + Linked Lists, Time O(V+E), Space O(V+E)\n"); break;
-        case 18: printf("BST Operations: Create BST and Count Number of Leaf Nodes, Time O(n), Space O(n)\n"); break;
-        case 19: printf("Binary Tree Traversals: Inorder, Preorder, Postorder, Time O(n), Space O(h) recursive / O(n) iterative\n"); break;
-        case 20: printf("Detect Cycle in Graph: Using DFS or Union-Find, Time O(V+E), Space O(V)\n"); break;
-
+        case 14: printf("Merge Sorted Lists: Time O(n+m), Space O(1)\n"); break;
+        case 15: printf("Queue using Two Stacks: Amortized O(1) per operation, Space O(n)\n"); break;
+        case 16: printf("Kruskal: Time O(E log E), Space O(V + E)\n"); break;
+        case 17: printf("Store Weighted Graph: Time O(V + E) to build, Space O(V + E)\n"); break;
+        case 18: printf("BST + Leaf Count: Time O(n), Space O(h) / O(n)\n"); break;
+        case 19: printf("Tree Traversals: Time O(n), Space O(h) / O(n)\n"); break;
+        case 20: printf("Cycle Detection: DFS O(V+E), Union-Find O(E α(V)), Space O(V+E)\n"); break;
         default: printf("Complexity not available.\n");
     }
 }
@@ -225,60 +332,64 @@ void showComplexity(int problem) {
 void problemMenu(int problem) {
     showProblemDescription(problem);
     int choice;
-    while(1) {
+    while (1) {
         printf("\n--- Problem %d Menu ---\n", problem);
         printf("1. Variations\n2. Flowchart\n3. Time/Space Complexity\n0. Back to Main Menu\n");
         printf("Enter choice: ");
-        scanf("%d", &choice);
-        if(choice == 0) break;
+        if (scanf("%d", &choice) != 1) return;
+        if (choice == 0) break;
 
-        switch(choice) {
-            case 1: showVariation(problem); break;
+        switch (choice) {
+            case 1: showVariation(problem);    break;
             case 2: displayFlowchart(problem); break;
-            case 3: showComplexity(problem); break;
+            case 3: showComplexity(problem);   break;
             default: printf("Invalid choice!\n");
         }
     }
 }
 
-int main() {
+int main(void) {
     int choice;
 
-    while(1) {
+    while (1) {
         printf("\n==============================\n");
-        printf("     DSA MINI PROJECT MENU\n");
+        printf("         DSA MINI PROJECT\n");
         printf("==============================\n");
-        printf("1. Find GCD and LCM\n");
-        printf("2. Check Prime Number\n");
-        printf("3. Factorial (Recursion & Iteration)\n");
-        printf("4. Sum of Digits (Recursion & Iteration)\n");
-        printf("5. Check Armstrong Number\n");
-        printf("6. Check if Two Strings are Anagrams\n");
-        printf("7. Find First Non-Repeating Character\n");
-        printf("8. Remove Duplicates from Array\n");
-        printf("9. Find Second Largest in Array\n");
-        printf("10. Find All Pairs with Given Sum\n");
-        printf("11. Check Balanced Parentheses\n");
-        printf("12. Reverse a Linked List\n");
-        printf("13. Find Middle Node of Linked List\n");
+        printf(" 1. GCD & LCM\n");
+        printf(" 2. Prime Check\n");
+        printf(" 3. Factorial\n");
+        printf(" 4. Sum of Digits\n");
+        printf(" 5. Armstrong Number\n");
+        printf(" 6. Anagram Check\n");
+        printf(" 7. First Non-Repeating Character\n");
+        printf(" 8. Remove Duplicates from Array\n");
+        printf(" 9. Second Largest in Array\n");
+        printf("10. Pairs with Given Sum\n");
+        printf("11. Balanced Parentheses\n");
+        printf("12. Reverse Linked List\n");
+        printf("13. Middle Node of Linked List\n");
         printf("14. Merge Two Sorted Linked Lists\n");
-        printf("15. Implement Queue Using Two Stacks\n");
-        printf("0. Exit\n");
+        printf("15. Queue Using Two Stacks\n");
+        printf("16. Kruskal Algorithm\n");
+        printf("17. Store Weighted Graph\n");
+        printf("18. BST Leaf Count\n");
+        printf("19. Binary Tree Traversals\n");
+        printf("20. Detect Cycle in Graph\n");
+        printf(" 0. Exit\n");
         printf("------------------------------\n");
         printf("Enter your choice: ");
-        scanf("%d", &choice);
+        if (scanf("%d", &choice) != 1) break;
 
-        if(choice == 0) {
+        if (choice == 0) {
             printf("Exiting program... Goodbye!\n");
             break;
         }
 
-        if(choice >=1 && choice <=15) {
+        if (choice >= 1 && choice <= 20) {
             problemMenu(choice);
         } else {
             printf("Invalid choice! Please try again.\n");
         }
     }
-
     return 0;
 }
