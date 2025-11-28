@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DSA Mini Project – Algorithm Explorer</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+<header class="topbar">
+    <div class="brand">
+        <span class="logo-circle">DSA</span>
+        <span class="brand-text">Mini Project – Algorithm Explorer</span>
+    </div>
+</header>
+
+<main class="page">
+
+    <section class="sidebar">
+        <h2>Problems</h2>
+        <ul id="problemList"></ul>
+    </section>
+
+    <section class="content">
+
+        <div class="card" id="welcomeCard">
+            <h2>Welcome 👋</h2>
+            <p>Select a problem on the left to view:</p>
+            <ul>
+                <li>Problem statement & variations</li>
+                <li>Time & space complexity</li>
+                <li>Flowchart steps (textual)</li>
+                <li>How to run it in your C program</li>
+            </ul>
+        </div>
+
+        <div id="problemCard" class="card hidden">
+            <h2 id="problemTitle"></h2>
+            <p id="problemDescription" class="muted"></p>
+
+            <div class="flex-row">
+                <div class="subcard">
+                    <h3>Variations</h3>
+                    <ul id="variationList"></ul>
+                </div>
+                <div class="subcard">
+                    <h3>Time & Space Complexity</h3>
+                    <p id="complexityText"></p>
+                </div>
+            </div>
+
+            <div class="subcard">
+                <h3>Flowchart (High-Level Steps)</h3>
+                <pre id="flowchartText"></pre>
+            </div>
+
+            <div class="subcard">
+                <h3>Run This in C</h3>
+                <p class="muted">
+                    Compile your project:
+                </p>
+<pre>gcc main.c codebase.c flowchart.c -o dsa_project</pre>
+                <p class="muted">
+                    Then run and choose:
+                </p>
+                <ul id="runSteps"></ul>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<footer class="footer">
+    DSA Mini Project &bullet; Implemented in C &bullet; Frontend by You 😊
+</footer>
+
+</body>
+</html>
