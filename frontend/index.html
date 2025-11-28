@@ -2,78 +2,81 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>DSA Mini Project – Algorithm Explorer</title>
+    <title>AlgoLense – DSA Mini Project</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
 </head>
 <body>
 
-<header class="topbar">
-    <div class="brand">
-        <span class="logo-circle">DSA</span>
-        <span class="brand-text">Mini Project – Algorithm Explorer</span>
-    </div>
-</header>
+<div class="layout">
 
-<main class="page">
-
-    <section class="sidebar">
+    <!-- Sidebar with problem list -->
+    <aside class="sidebar">
         <h2>Problems</h2>
         <ul id="problemList"></ul>
-    </section>
+    </aside>
 
-    <section class="content">
-
-        <div class="card" id="welcomeCard">
-            <h2>Welcome 👋</h2>
-            <p>Select a problem on the left to view:</p>
-            <ul>
-                <li>Problem statement & variations</li>
-                <li>Time & space complexity</li>
-                <li>Flowchart steps (textual)</li>
-                <li>How to run it in your C program</li>
-            </ul>
+    <!-- Main content area -->
+    <main class="content">
+        <div id="welcomeBox">
+            <h1>Welcome 👋</h1>
+            <p>Select a problem from the left panel to get started.</p>
         </div>
 
-        <div id="problemCard" class="card hidden">
-            <h2 id="problemTitle"></h2>
-            <p id="problemDescription" class="muted"></p>
+        <div id="problemBox" class="hidden">
+            <h1 id="problemTitle"></h1>
+            <p id="problemDesc"></p>
 
-            <div class="flex-row">
-                <div class="subcard">
-                    <h3>Variations</h3>
-                    <ul id="variationList"></ul>
-                </div>
-                <div class="subcard">
-                    <h3>Time & Space Complexity</h3>
-                    <p id="complexityText"></p>
-                </div>
+            <div class="actions">
+                <button id="btnVariations" onclick="openVariations()">Variations</button>
+                <button id="btnFlowchart" onclick="showFlowchart()">Flowchart</button>
+                <button id="btnComplexity" onclick="showComplexity()">Time &amp; Space Complexity</button>
             </div>
 
-            <div class="subcard">
-                <h3>Flowchart (High-Level Steps)</h3>
-                <pre id="flowchartText"></pre>
+            <!-- Variation selection area -->
+            <div id="variationSection" class="panel hidden">
+                <h2>Choose a Variation</h2>
+                <div id="variationList" class="variation-list"></div>
             </div>
 
-            <div class="subcard">
-                <h3>Run This in C</h3>
-                <p class="muted">
-                    Compile your project:
+            <!-- Input + Run area -->
+            <div id="inputSection" class="panel hidden">
+                <h2 id="variationTitle"></h2>
+                <p class="hint">
+                    Enter only the actual data input asked by this variation.<br>
+                    (You do <b>not</b> need to enter any menu numbers – those are handled automatically.)
                 </p>
-<pre>gcc main.c codebase.c flowchart.c -o dsa_project</pre>
-                <p class="muted">
-                    Then run and choose:
-                </p>
-                <ul id="runSteps"></ul>
+                <textarea id="variationInput" placeholder="Example: 12 18"></textarea>
+                <button class="run-btn" onclick="runSelectedVariation()">Run</button>
             </div>
+
+            <h2>Output</h2>
+            <pre id="outputBox"></pre>
         </div>
+    </main>
+</div>
 
-    </section>
-</main>
+<!-- Flowchart Modal -->
+<div id="flowchartModal" class="modal hidden">
+    <div class="modal-content">
+        <h2>Flowchart</h2>
+        <pre id="flowchartContent"></pre>
+        <div class="modal-actions">
+            <button class="btn-secondary" onclick="closeFlowchartModal()">Close</button>
+        </div>
+    </div>
+</div>
 
-<footer class="footer">
-    DSA Mini Project &bullet; Implemented in C &bullet; Frontend by You 😊
-</footer>
+<!-- Complexity Modal -->
+<div id="complexityModal" class="modal hidden">
+    <div class="modal-content">
+        <h2>Time &amp; Space Complexity</h2>
+        <pre id="complexityContent"></pre>
+        <div class="modal-actions">
+            <button class="btn-secondary" onclick="closeComplexityModal()">Close</button>
+        </div>
+    </div>
+</div>
 
+<script src="script.js"></script>
 </body>
 </html>

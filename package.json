@@ -1,0 +1,25 @@
+{
+  "name": "algolense",
+  "version": "1.0.0",
+  "description": "A modular C-based learning system for beginners to explore Data Structures and Algorithms through multiple approaches and performance comparison,\r CodeVariation is a comprehensive Data Structures & Algorithms practice project written entirely in C, where each problem statement is implemented using multiple approaches.\r The aim is to help learners compare different techniques, improve problem-solving skills, and understand how algorithmic choices impact performance with flowcharts.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vaidnehal10-afk/AlgoLense.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/vaidnehal10-afk/AlgoLense/issues"
+  },
+  "homepage": "https://github.com/vaidnehal10-afk/AlgoLense#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}
