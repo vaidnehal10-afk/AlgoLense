@@ -1238,5 +1238,112 @@ int isCyclicUF_A3(int edges[][2], int V, int E){
     for(int i=0;i<E;i++){
         if(!unionUF_A3(parent,edges[i][0],edges[i][1])) return 1;
     }
+    /* ----------- Helper functions for binary tree wrappers (Problem 19) ----------- */
+
+static TreeNode* buildTreePreorder(void) {
+    int x;
+    if (scanf("%d", &x) != 1) return NULL;
+    if (x == -1) return NULL;  // -1 represents NULL
+    TreeNode *node = (TreeNode*)malloc(sizeof(TreeNode));
+    if (!node) return NULL;
+    node->data = x;
+    node->left  = buildTreePreorder();
+    node->right = buildTreePreorder();
+    return node;
+}
+
+static void freeTree(TreeNode *root) {
+    if (!root) return;
+    freeTree(root->left);
+    freeTree(root->right);
+    free(root);
+}
+
+/* Variation 1: Inorder recursive */
+void treeTraversal_A1(void) {
+    printf("Enter nodes of binary tree in preorder (use -1 for NULL):\n");
+    TreeNode *root = buildTreePreorder();
+    printf("Inorder traversal (recursive): ");
+    inorder_A1(root);
+    printf("\n");
+    freeTree(root);
+}
+
+/* Variation 2: Inorder iterative */
+void treeTraversal_A2(void) {
+    printf("Enter nodes of binary tree in preorder (use -1 for NULL):\n");
+    TreeNode *root = buildTreePreorder();
+    printf("Inorder traversal (iterative): ");
+    inorder_A2(root);
+    printf("\n");
+    freeTree(root);
+}
+
+/* Variation 3: Preorder recursive */
+void treeTraversal_A3(void) {
+    printf("Enter nodes of binary tree in preorder (use -1 for NULL):\n");
+    TreeNode *root = buildTreePreorder();
+    printf("Preorder traversal (recursive): ");
+    preorder_A3(root);
+    printf("\n");
+    freeTree(root);
+}
+
+/* ----------- Wrappers for cycle detection (Problem 20) ----------- */
+
+/* DFS on directed graph using adjacency matrix */
+void detectCycle_A1(void) {
+    int V, E;
+    printf("Enter number of vertices and edges (directed graph): ");
+    if (scanf("%d %d", &V, &E) != 2) return;
+    if (V <= 0 || E < 0) return;
+
+    int **g = (int**)malloc(V * sizeof(int*));
+    if (!g) return;
+    for (int i = 0; i < V; ++i) {
+        g[i] = (int*)calloc(V, sizeof(int));
+        if (!g[i]) return;
+    }
+
+    printf("Enter %d directed edges (u v) with vertices in [0..%d]:\n", E, V - 1);
+    for (int i = 0; i < E; ++i) {
+        int u, v;
+        scanf("%d %d", &u, &v);
+        if (u >= 0 && u < V && v >= 0 && v < V) {
+            g[u][v] = 1;
+        }
+    }
+
+    int hasCycle = isCyclicDFS_A1(g, V);
+    if (hasCycle) printf("Graph contains a cycle.\n");
+    else          printf("Graph does NOT contain a cycle.\n");
+
+    for (int i = 0; i < V; ++i) free(g[i]);
+    free(g);
+}
+
+/* Union-Find on undirected graph using edge list */
+void detectCycle_A2(void) {
+    int V, E;
+    printf("Enter number of vertices and edges (undirected graph): ");
+    if (scanf("%d %d", &V, &E) != 2) return;
+    if (V <= 0 || E < 0) return;
+
+    int (*edges)[2] = malloc(E * sizeof *edges);
+    if (!edges) return;
+
+    printf("Enter %d edges (u v) with vertices in [0..%d]:\n", E, V - 1);
+    for (int i = 0; i < E; ++i) {
+        scanf("%d %d", &edges[i][0], &edges[i][1]);
+    }
+
+    int hasCycle = isCyclicUF_A3(edges, V, E);
+    if (hasCycle) printf("Graph contains a cycle.\n");
+    else          printf("Graph does NOT contain a cycle.\n");
+
+    free(edges);
+}
+
     return 0;
 }
+
