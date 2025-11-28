@@ -16,7 +16,7 @@ void showProblemDescription(int problem) {
             break;
         case 3:
             printf("\nProblem 3: Factorial\n");
-            printf("Description: Calculate factorial of a number using iterative / recursive / big-integer approach.\n");
+            printf("Description: Calculate factorial of a number using iterative / recursive / big integer approach.\n");
             break;
         case 4:
             printf("\nProblem 4: Sum of Digits\n");
@@ -24,7 +24,7 @@ void showProblemDescription(int problem) {
             break;
         case 5:
             printf("\nProblem 5: Check Armstrong Number\n");
-            printf("Description: Determine if a number is an Armstrong number (3-digit / n-digit).\n");
+            printf("Description: Determine if a number is an Armstrong number.\n");
             break;
         case 6:
             printf("\nProblem 6: Check if Two Strings are Anagrams\n");
@@ -72,7 +72,7 @@ void showProblemDescription(int problem) {
             break;
         case 17:
             printf("\nProblem 17: Store Weighted Graph\n");
-            printf("Description: Store weighted graph using adjacency list (array of pointers / tail pointers).\n");
+            printf("Description: Store weighted graph using adjacency list.\n");
             break;
         case 18:
             printf("\nProblem 18: Create BST and Count Leaf Nodes\n");
@@ -305,24 +305,24 @@ void showComplexity(int problem) {
     printf("\n--- Time and Space Complexity ---\n");
     switch (problem) {
         case 1:  printf("GCD & LCM: Time O(log min(a,b)), Space O(1)\n"); break;
-        case 2:  printf("Prime (Naive): O(n), Optimized: O(sqrt(n)), Space O(1)\n"); break;
-        case 3:  printf("Factorial: Iter/Rec O(n), Space O(1)/O(n), Big-int: O(n^2) roughly\n"); break;
-        case 4:  printf("Sum of Digits: Time O(log10 n), Space O(1) or O(log n)\n"); break;
-        case 5:  printf("Armstrong: Time O(d) where d = digits, Space O(1)\n"); break;
-        case 6:  printf("Anagram: Time O(n + m) or O(n log n), Space O(1)/O(k)\n"); break;
-        case 7:  printf("First Non-Repeating Char: Time O(n), Space O(1) (fixed alphabet)\n"); break;
+        case 2:  printf("Prime: Time O(sqrt(n)), Space O(1)\n"); break;
+        case 3:  printf("Factorial: O(n) time, big-int has extra digit handling; space O(1)/O(n)\n"); break;
+        case 4:  printf("Sum of Digits: Time O(d), Space O(1) / O(d)\n"); break;
+        case 5:  printf("Armstrong: Time O(d), Space O(1)\n"); break;
+        case 6:  printf("Anagram: Time O(n) / O(n log n), Space O(1)/O(n)\n"); break;
+        case 7:  printf("First Non-Repeating Char: Time O(n), Space O(1)\n"); break;
         case 8:  printf("Remove Duplicates: O(n^2) or O(n log n), Space O(1)/O(n)\n"); break;
         case 9:  printf("Second Largest: O(n) or O(n log n), Space O(1)\n"); break;
-        case 10: printf("Pairs with Sum: O(n^2) or O(n log n), Space O(1)\n"); break;
+        case 10: printf("Pairs with Sum: Time O(n^2) or O(n log n), Space O(1)\n"); break;
         case 11: printf("Balanced Parentheses: Time O(n), Space O(n)\n"); break;
         case 12: printf("Reverse Linked List: Time O(n), Space O(1)/O(n)\n"); break;
         case 13: printf("Middle Node: Time O(n), Space O(1)\n"); break;
         case 14: printf("Merge Sorted Lists: Time O(n+m), Space O(1)\n"); break;
-        case 15: printf("Queue using Two Stacks: Amortized O(1) per operation, Space O(n)\n"); break;
-        case 16: printf("Kruskal: Time O(E log E), Space O(V + E)\n"); break;
-        case 17: printf("Store Weighted Graph: Time O(V + E) to build, Space O(V + E)\n"); break;
-        case 18: printf("BST + Leaf Count: Time O(n), Space O(h) / O(n)\n"); break;
-        case 19: printf("Tree Traversals: Time O(n), Space O(h) / O(n)\n"); break;
+        case 15: printf("Queue using Two Stacks: Amortized O(1), Space O(n)\n"); break;
+        case 16: printf("Kruskal: Time O(E log E), Space O(V+E)\n"); break;
+        case 17: printf("Store Weighted Graph: Build O(V+E), Space O(V+E)\n"); break;
+        case 18: printf("BST Leaf Count: Time O(n), Space O(h)/O(n)\n"); break;
+        case 19: printf("Traversals: Time O(n), Space O(h)/O(n)\n"); break;
         case 20: printf("Cycle Detection: DFS O(V+E), Union-Find O(E α(V)), Space O(V+E)\n"); break;
         default: printf("Complexity not available.\n");
     }
