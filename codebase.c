@@ -1,10 +1,26 @@
-
+// codebase.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include <limits.h>
 #include <ctype.h>
+#include "codebase.h"
+
+/* -------------------------------------------------------------------------- */
+/* GLOBALS FOR STACKS / QUEUES (DECLARED extern IN HEADER)                    */
+/* -------------------------------------------------------------------------- */
+
+char _stk1[STACK_SIZE_1];
+int  _top1 = -1;
+
+char _stk2[STACK_SIZE_2];
+int  _top2 = -1;
+
+int q_stack1[QSIZE], q_stack2[QSIZE];
+int q_top1 = -1, q_top2 = -1;
+
+int s1[QSIZE], s2[QSIZE], t1 = -1, t2 = -1;
 
 /* -------------------------------------------------------------------------- */
 /* 1. GCD & LCM                                                              */
@@ -144,8 +160,8 @@ void findFactorial_A3() {
         int carry = 0;
         for (int i = 0; i < res_size; ++i) {
             long long prod = (long long)res[i] * x + carry;
-            res[i] = prod % 10;
-            carry = prod / 10;
+            res[i] = (int)(prod % 10);
+            carry = (int)(prod / 10);
         }
         while (carry) {
             res[res_size++] = carry % 10;
@@ -169,7 +185,7 @@ void sumOfDigits_A1() {
     n = llabs(n);
     int sum = 0;
     while (n > 0) {
-        sum += n % 10;
+        sum += (int)(n % 10);
         n /= 10;
     }
     printf("Sum of digits = %d\n", sum);
@@ -236,9 +252,9 @@ void checkArmstrong_A2() {
 void checkAnagram_A1() {
     char s1[256], s2[256];
     printf("Enter first string: ");
-    if (scanf("%s", s1) != 1) return;
+    if (scanf("%255s", s1) != 1) return;
     printf("Enter second string: ");
-    if (scanf("%s", s2) != 1) return;
+    if (scanf("%255s", s2) != 1) return;
     if (strlen(s1) != strlen(s2)) { printf("Not Anagram\n"); return; }
     int freq[256] = {0};
     for (int i = 0; s1[i]; ++i) {
@@ -260,10 +276,10 @@ int cmp_char(const void *a, const void *b) {
 void checkAnagram_A2() {
     char s1[256], s2[256];
     printf("Enter first string: ");
-    if (scanf("%s", s1) != 1) return;
+    if (scanf("%255s", s1) != 1) return;
     printf("Enter second string: ");
-    if (scanf("%s", s2) != 1) return;
-    int n1 = strlen(s1), n2 = strlen(s2);
+    if (scanf("%255s", s2) != 1) return;
+    int n1 = (int)strlen(s1), n2 = (int)strlen(s2);
     if (n1 != n2) { printf("Not Anagram\n"); return; }
     qsort(s1, n1, sizeof(char), cmp_char);
     qsort(s2, n2, sizeof(char), cmp_char);
@@ -278,11 +294,14 @@ void checkAnagram_A2() {
 void firstNonRepeatingChar_A1() {
     char s[512];
     printf("Enter string: ");
-    if (scanf("%s", s) != 1) return;
+    if (scanf("%511s", s) != 1) return;
     int freq[256] = {0};
     for (int i = 0; s[i]; ++i) freq[(unsigned char)s[i]]++;
     for (int i = 0; s[i]; ++i) {
-        if (freq[(unsigned char)s[i]] == 1) { printf("First non-repeating character: %c\n", s[i]); return; }
+        if (freq[(unsigned char)s[i]] == 1) { 
+            printf("First non-repeating character: %c\n", s[i]); 
+            return; 
+        }
     }
     printf("No non-repeating character found\n");
 }
@@ -291,7 +310,7 @@ void firstNonRepeatingChar_A1() {
 void firstNonRepeatingChar_A2() {
     char s[512];
     printf("Enter string: ");
-    if (scanf("%s", s) != 1) return;
+    if (scanf("%511s", s) != 1) return;
     int idx[256];
     for (int i = 0; i < 256; ++i) idx[i] = -1;
     for (int i = 0; s[i]; ++i) {
@@ -300,7 +319,8 @@ void firstNonRepeatingChar_A2() {
         else idx[c] = -2; /* repeated */
     }
     int pos = INT_MAX;
-    for (int i = 0; i < 256; ++i) if (idx[i] >= 0 && idx[i] < pos) pos = idx[i];
+    for (int i = 0; i < 256; ++i) 
+        if (idx[i] >= 0 && idx[i] < pos) pos = idx[i];
     if (pos == INT_MAX) printf("No non-repeating character found\n");
     else printf("First non-repeating character: %c\n", s[pos]);
 }
@@ -310,12 +330,21 @@ void firstNonRepeatingChar_A2() {
 /* -------------------------------------------------------------------------- */
 
 /* Approach 1: Preserve first occurrences (O(n^2)) */
+int cmp_int(const void *a, const void *b) {
+    int va = *(const int*)a;
+    int vb = *(const int*)b;
+    return (va > vb) - (va < vb);
+}
+
 void removeDuplicates_A1() {
     int n;
     printf("Enter number of elements: ");
-    if (scanf("%d", &n) != 1) return;
-    int *arr = malloc(n * sizeof(int));
-    if (!arr) return;
+    if (scanf("%d", &n) != 1 || n < 0) return;
+    int *arr = NULL;
+    if (n > 0) {
+        arr = (int*)malloc(n * sizeof(int));
+        if (!arr) return;
+    }
     printf("Enter elements: ");
     for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
     printf("Array after removing duplicates: ");
@@ -329,24 +358,23 @@ void removeDuplicates_A1() {
 }
 
 /* Approach 2: Sort and print unique values (order not preserved) */
-int cmp_int(const void *a, const void *b) {
-    int va = *(const int*)a;
-    int vb = *(const int*)b;
-    return (va > vb) - (va < vb);
-}
 void removeDuplicates_A2() {
     int n;
     printf("Enter number of elements: ");
-    if (scanf("%d", &n) != 1) return;
-    int *arr = malloc(n * sizeof(int));
-    if (!arr) return;
+    if (scanf("%d", &n) != 1 || n < 0) return;
+    int *arr = NULL;
+    if (n > 0) {
+        arr = (int*)malloc(n * sizeof(int));
+        if (!arr) return;
+    }
     printf("Enter elements: ");
     for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
     qsort(arr, n, sizeof(int), cmp_int);
     printf("Array after removing duplicates: ");
     if (n > 0) {
         printf("%d ", arr[0]);
-        for (int i = 1; i < n; ++i) if (arr[i] != arr[i-1]) printf("%d ", arr[i]);
+        for (int i = 1; i < n; ++i) 
+            if (arr[i] != arr[i-1]) printf("%d ", arr[i]);
     }
     printf("\n");
     free(arr);
@@ -361,15 +389,17 @@ void secondLargest_A1() {
     int n;
     printf("Enter number of elements: ");
     if (scanf("%d", &n) != 1 || n <= 0) return;
-    int *arr = malloc(n * sizeof(int));
+    int *arr = (int*)malloc(n * sizeof(int));
     if (!arr) return;
+    printf("Enter elements: ");
     for (int i = 0; i < n; ++i) scanf("%d", &arr[i]);
     long long first = LLONG_MIN, second = LLONG_MIN;
     for (int i = 0; i < n; ++i) {
         if (arr[i] > first) { second = first; first = arr[i]; }
         else if (arr[i] > second && arr[i] != first) second = arr[i];
     }
-    if (second == LLONG_MIN) printf("No second largest element\n"); else printf("Second largest element = %lld\n", second);
+    if (second == LLONG_MIN) printf("No second largest element\n"); 
+    else printf("Second largest element = %lld\n", second);
     free(arr);
 }
 
@@ -378,14 +408,16 @@ void secondLargest_A2() {
     int n;
     printf("Enter number of elements: ");
     if (scanf("%d", &n) != 1 || n <= 0) return;
-    int *arr = malloc(n * sizeof(int));
+    int *arr = (int*)malloc(n * sizeof(int));
     if (!arr) return;
+    printf("Enter elements: ");
     for (int i = 0; i < n; ++i) scanf("%d", &arr[i]);
     qsort(arr, n, sizeof(int), cmp_int);
     int i = n - 1;
     int max = arr[i];
     while (i >= 0 && arr[i] == max) i--;
-    if (i < 0) printf("No second largest element\n"); else printf("Second largest element = %d\n", arr[i]);
+    if (i < 0) printf("No second largest element\n"); 
+    else printf("Second largest element = %d\n", arr[i]);
     free(arr);
 }
 
@@ -397,9 +429,12 @@ void secondLargest_A2() {
 void findPairsWithSum_A1() {
     int n, target;
     printf("Enter number of elements: ");
-    if (scanf("%d", &n) != 1) return;
-    int *arr = malloc(n * sizeof(int));
-    if (!arr) return;
+    if (scanf("%d", &n) != 1 || n < 0) return;
+    int *arr = NULL;
+    if (n > 0) {
+        arr = (int*)malloc(n * sizeof(int));
+        if (!arr) return;
+    }
     printf("Enter elements: ");
     for (int i = 0; i < n; ++i) scanf("%d", &arr[i]);
     printf("Enter target sum: ");
@@ -415,9 +450,12 @@ void findPairsWithSum_A1() {
 void findPairsWithSum_A2() {
     int n, target;
     printf("Enter number of elements: ");
-    if (scanf("%d", &n) != 1) return;
-    int *arr = malloc(n * sizeof(int));
-    if (!arr) return;
+    if (scanf("%d", &n) != 1 || n < 0) return;
+    int *arr = NULL;
+    if (n > 0) {
+        arr = (int*)malloc(n * sizeof(int));
+        if (!arr) return;
+    }
     printf("Enter elements: ");
     for (int i = 0; i < n; ++i) scanf("%d", &arr[i]);
     printf("Enter target sum: ");
@@ -443,13 +481,10 @@ void findPairsWithSum_A2() {
 /* -------------------------------------------------------------------------- */
 
 /* Approach 1: Single-type parentheses using a simple stack */
-#define STACK_SIZE_1 256
-char _stk1[STACK_SIZE_1];
-int _top1 = -1;
 void checkBalancedParentheses_A1() {
     char exp[512];
     printf("Enter expression: ");
-    if (scanf("%s", exp) != 1) return;
+    if (scanf("%511s", exp) != 1) return;
     _top1 = -1;
     for (int i = 0; exp[i]; ++i) {
         if (exp[i] == '(') {
@@ -463,9 +498,6 @@ void checkBalancedParentheses_A1() {
 }
 
 /* Approach 2: Handle (), {}, [] using stack */
-#define STACK_SIZE_2 512
-char _stk2[STACK_SIZE_2];
-int _top2 = -1;
 void checkBalancedParentheses_A2() {
     char exp[512];
     printf("Enter expression: ");
@@ -478,7 +510,10 @@ void checkBalancedParentheses_A2() {
         } else if (c == ')' || c == '}' || c == ']') {
             if (_top2 == -1) { printf("Not Balanced\n"); return; }
             char t = _stk2[_top2--];
-            if ((c == ')' && t != '(') || (c == '}' && t != '{') || (c == ']' && t != '[')) { printf("Not Balanced\n"); return; }
+            if ((c == ')' && t != '(') || (c == '}' && t != '{') || (c == ']' && t != '[')) { 
+                printf("Not Balanced\n"); 
+                return; 
+            }
         }
     }
     printf((_top2 == -1) ? "Balanced\n" : "Not Balanced\n");
@@ -488,18 +523,12 @@ void checkBalancedParentheses_A2() {
 /* 12. Reverse Linked List                                                     */
 /* -------------------------------------------------------------------------- */
 
-struct Node {
-    int data;
-    struct Node* next;
-};
-
-/* Approach 1: Iterative reverse */
 void reverseLinkedList_A1() {
     struct Node* head = NULL;
     struct Node* temp;
     int n, val;
     printf("Enter number of nodes: ");
-    if (scanf("%d", &n) != 1) return;
+    if (scanf("%d", &n) != 1 || n < 0) return;
     for (int i = 0; i < n; ++i) {
         temp = (struct Node*)malloc(sizeof(struct Node));
         if (!temp) return;
@@ -528,9 +557,9 @@ void reverseLinkedList_A1() {
     printf("\n");
 }
 
-/* Approach 2: Recursive reverse (build by tail insertion to preserve input order) */
+/* tail insertion helper */
 struct Node* insert_tail(struct Node* head, int val) {
-    struct Node* nn = malloc(sizeof(struct Node));
+    struct Node* nn = (struct Node*)malloc(sizeof(struct Node));
     if (!nn) return head;
     nn->data = val;
     nn->next = NULL;
@@ -551,7 +580,7 @@ void reverseLinkedList_A2() {
     struct Node* head = NULL;
     int n, val;
     printf("Enter number of nodes: ");
-    if (scanf("%d", &n) != 1) return;
+    if (scanf("%d", &n) != 1 || n < 0) return;
     for (int i = 0; i < n; ++i) {
         printf("Enter value: ");
         scanf("%d", &val);
@@ -578,9 +607,10 @@ void findMiddleNode_A1() {
     struct Node* temp;
     int n, val;
     printf("Enter number of nodes: ");
-    if (scanf("%d", &n) != 1) return;
+    if (scanf("%d", &n) != 1 || n < 0) return;
     for (int i = 0; i < n; ++i) {
         temp = (struct Node*)malloc(sizeof(struct Node));
+        if (!temp) return;
         printf("Enter value: ");
         scanf("%d", &val);
         temp->data = val;
@@ -604,9 +634,9 @@ void findMiddleNode_A2() {
     struct Node* tail = NULL;
     int n, val;
     printf("Enter number of nodes: ");
-    if (scanf("%d", &n) != 1) return;
+    if (scanf("%d", &n) != 1 || n < 0) return;
     for (int i = 0; i < n; ++i) {
-        struct Node* nn = malloc(sizeof(struct Node));
+        struct Node* nn = (struct Node*)malloc(sizeof(struct Node));
         if (!nn) return;
         printf("Enter value: ");
         scanf("%d", &val);
@@ -630,11 +660,10 @@ void findMiddleNode_A2() {
 /* 14. Merge Two Sorted Linked Lists                                           */
 /* -------------------------------------------------------------------------- */
 
-/* Approach 1: Merge by pointer manipulation (assumes lists are sorted) */
 struct Node* read_list_head_insert(int n) {
     struct Node* head = NULL;
     for (int i = 0; i < n; ++i) {
-        struct Node* nn = malloc(sizeof(struct Node));
+        struct Node* nn = (struct Node*)malloc(sizeof(struct Node));
         if (!nn) return head;
         printf("Enter value: ");
         scanf("%d", &nn->data);
@@ -643,14 +672,18 @@ struct Node* read_list_head_insert(int n) {
     }
     return head;
 }
+
 void mergeSortedLists_A1() {
     struct Node *head1 = NULL, *head2 = NULL, *temp;
-    int n1, n2, val;
+    int n1, n2;
     printf("Enter number of nodes in List1: ");
-    if (scanf("%d", &n1) != 1) return;
+    if (scanf("%d", &n1) != 1 || n1 < 0) return;
     head1 = read_list_head_insert(n1);
     printf("Enter number of nodes in List2: ");
-    if (scanf("%d", &n2) != 1) { while (head1) { temp = head1->next; free(head1); head1 = temp; } return; }
+    if (scanf("%d", &n2) != 1 || n2 < 0) { 
+        while (head1) { temp = head1->next; free(head1); head1 = temp; } 
+        return; 
+    }
     head2 = read_list_head_insert(n2);
     struct Node dummy;
     struct Node* tail = &dummy;
@@ -681,12 +714,20 @@ void mergeSortedLists_A1() {
 void mergeSortedLists_A2() {
     int n1, n2;
     printf("Enter number of nodes in List1: ");
-    if (scanf("%d", &n1) != 1) return;
-    int *a1 = malloc((n1 > 0 ? n1 : 1) * sizeof(int));
+    if (scanf("%d", &n1) != 1 || n1 < 0) return;
+    int *a1 = NULL;
+    if (n1 > 0) {
+        a1 = (int*)malloc(n1 * sizeof(int));
+        if (!a1) return;
+    }
     for (int i = 0; i < n1; ++i) { printf("Enter value: "); scanf("%d", &a1[i]); }
     printf("Enter number of nodes in List2: ");
-    if (scanf("%d", &n2) != 1) { free(a1); return; }
-    int *a2 = malloc((n2 > 0 ? n2 : 1) * sizeof(int));
+    if (scanf("%d", &n2) != 1 || n2 < 0) { free(a1); return; }
+    int *a2 = NULL;
+    if (n2 > 0) {
+        a2 = (int*)malloc(n2 * sizeof(int));
+        if (!a2) { free(a1); return; }
+    }
     for (int i = 0; i < n2; ++i) { printf("Enter value: "); scanf("%d", &a2[i]); }
     int i = 0, j = 0;
     printf("Merged list: ");
@@ -705,13 +746,11 @@ void mergeSortedLists_A2() {
 /* -------------------------------------------------------------------------- */
 
 /* Approach 1: Menu-driven with two fixed-size arrays (as original style) */
-#define QSIZE 256
-int q_stack1[QSIZE], q_stack2[QSIZE];
-int q_top1 = -1, q_top2 = -1;
 void q_push1(int x) { if (q_top1 + 1 < QSIZE) q_stack1[++q_top1] = x; }
 void q_push2(int x) { if (q_top2 + 1 < QSIZE) q_stack2[++q_top2] = x; }
 int q_pop1() { return (q_top1 == -1) ? INT_MIN : q_stack1[q_top1--]; }
 int q_pop2() { return (q_top2 == -1) ? INT_MIN : q_stack2[q_top2--]; }
+
 void queueUsingStacks_A1() {
     int choice, x;
     q_top1 = q_top2 = -1;
@@ -749,8 +788,8 @@ void queueUsingStacks_A1() {
 }
 
 /* Approach 2: Encapsulated enqueue/dequeue functions (no interactive menu required) */
-int s1[QSIZE], s2[QSIZE], t1 = -1, t2 = -1;
 void enqueue_A2(int x) { if (t1 + 1 < QSIZE) s1[++t1] = x; }
+
 int dequeue_A2() {
     if (t2 == -1) {
         while (t1 != -1) s2[++t2] = s1[t1--];
@@ -758,10 +797,12 @@ int dequeue_A2() {
     if (t2 == -1) return INT_MIN;
     return s2[t2--];
 }
+
 void queueUsingStacks_A2() {
     int ops;
+    t1 = t2 = -1;
     printf("Enter number of operations: ");
-    if (scanf("%d", &ops) != 1) return;
+    if (scanf("%d", &ops) != 1 || ops < 0) return;
     for (int i = 0; i < ops; ++i) {
         int op;
         printf("Operation (1-enqueue 2-dequeue 3-display): ");
@@ -783,29 +824,24 @@ void queueUsingStacks_A2() {
     }
 }
 
-
-
 /* -------------------------------------------------------------------------- */
-/* 16. Kruskal's Algorithm (use Union-Find).             */
+/* 16. Kruskal's Algorithm (use Union-Find).                                  */
 /* -------------------------------------------------------------------------- */
 
-typedef struct Edge {
-    int u, v;
-    int w;
-} Edge;
-
-/* ---- Utility: Disjoint Set Union (path compression + rank) ---- */
-typedef struct DSU {
-    int *parent;
-    int *rank;
-    int n;
-} DSU;
+/* DSU implementation */
 
 DSU* dsu_create(int n) {
-    DSU *d = malloc(sizeof(DSU));
+    DSU *d = (DSU*)malloc(sizeof(DSU));
+    if (!d) return NULL;
     d->n = n;
-    d->parent = malloc((n+1) * sizeof(int));
-    d->rank = malloc((n+1) * sizeof(int));
+    d->parent = (int*)malloc((n+1) * sizeof(int));
+    d->rank   = (int*)malloc((n+1) * sizeof(int));
+    if (!d->parent || !d->rank) {
+        free(d->parent);
+        free(d->rank);
+        free(d);
+        return NULL;
+    }
     for (int i = 0; i <= n; ++i) { d->parent[i] = i; d->rank[i] = 0; }
     return d;
 }
@@ -821,11 +857,17 @@ void dsu_union(DSU *d, int x, int y) {
     else if (d->rank[ry] < d->rank[rx]) d->parent[ry] = rx;
     else { d->parent[ry] = rx; d->rank[rx]++; }
 }
-void dsu_free(DSU *d) { if (!d) return; free(d->parent); free(d->rank); free(d); }
+void dsu_free(DSU *d) { 
+    if (!d) return; 
+    free(d->parent); 
+    free(d->rank); 
+    free(d); 
+}
 
 /* ------------------ Approach 1: qsort edges + DSU ------------------ */
 int cmp_edge(const void *a, const void *b) {
-    const Edge *ea = a; const Edge *eb = b;
+    const Edge *ea = (const Edge*)a; 
+    const Edge *eb = (const Edge*)b;
     return (ea->w > eb->w) - (ea->w < eb->w);
 }
 void kruskal_qsort_A1() {
@@ -833,11 +875,16 @@ void kruskal_qsort_A1() {
     printf("Enter number of vertices and edges: ");
     if (scanf("%d %d", &n, &m) != 2) return;
     if (n <= 0 || m < 0) return;
-    Edge *edges = malloc(m * sizeof(Edge));
+    Edge *edges = NULL;
+    if (m > 0) {
+        edges = (Edge*)malloc(m * sizeof(Edge));
+        if (!edges) return;
+    }
     printf("Enter edges (u v w) each on new line:\n");
     for (int i = 0; i < m; ++i) scanf("%d %d %d", &edges[i].u, &edges[i].v, &edges[i].w);
     qsort(edges, m, sizeof(Edge), cmp_edge);
     DSU *d = dsu_create(n);
+    if (!d) { free(edges); return; }
     int count = 0;
     long long total_w = 0;
     printf("MST edges:\n");
@@ -857,22 +904,22 @@ void kruskal_qsort_A1() {
 }
 
 /* ------------------ Approach 2: Min-heap of edges + DSU ------------------ */
-typedef struct MinHeap {
-    Edge *data;
-    int size;
-    int cap;
-} MinHeap;
+
 MinHeap* heap_create(int cap) {
-    MinHeap *h = malloc(sizeof(MinHeap));
-    h->data = malloc((cap+1) * sizeof(Edge)); // 1-based
-    h->size = 0; h->cap = cap;
+    MinHeap *h = (MinHeap*)malloc(sizeof(MinHeap));
+    if (!h) return NULL;
+    h->data = (Edge*)malloc((cap+1) * sizeof(Edge)); // 1-based
+    if (!h->data) { free(h); return NULL; }
+    h->size = 0; 
+    h->cap = cap;
     return h;
 }
 void heap_swap(Edge *a, Edge *b) { Edge t = *a; *a = *b; *b = t; }
 void heap_push(MinHeap *h, Edge e) {
     if (h->size + 1 > h->cap) {
         h->cap = h->cap * 2 + 1;
-        h->data = realloc(h->data, (h->cap+1) * sizeof(Edge));
+        h->data = (Edge*)realloc(h->data, (h->cap+1) * sizeof(Edge));
+        if (!h->data) return;
     }
     int i = ++h->size;
     h->data[i] = e;
@@ -901,12 +948,14 @@ void kruskal_heap_A2() {
     if (scanf("%d %d", &n, &m) != 2) return;
     if (n <= 0 || m < 0) return;
     MinHeap *h = heap_create(m > 0 ? m : 4);
+    if (!h) return;
     printf("Enter edges (u v w) each on new line:\n");
     for (int i = 0; i < m; ++i) {
         Edge e; scanf("%d %d %d", &e.u, &e.v, &e.w);
         heap_push(h, e);
     }
     DSU *d = dsu_create(n);
+    if (!d) { heap_free(h); return; }
     int count = 0;
     long long total_w = 0;
     printf("MST edges:\n");
@@ -931,14 +980,10 @@ void kruskal_heap_A2() {
 /* -------------------------------------------------------------------------- */
 
 /* Approach 1: basic adjacency list */
-typedef struct AdjNode {
-    int v;
-    int w;
-    struct AdjNode *next;
-} AdjNode;
 
 void add_edge_basic(AdjNode **adj, int u, int v, int w) {
-    AdjNode *nn = malloc(sizeof(AdjNode));
+    AdjNode *nn = (AdjNode*)malloc(sizeof(AdjNode));
+    if (!nn) return;
     nn->v = v; nn->w = w; nn->next = adj[u]; adj[u] = nn;
 }
 
@@ -947,16 +992,15 @@ void storeWeightedGraph_A1() {
     printf("Enter number of vertices and edges: ");
     if (scanf("%d %d", &n, &m) != 2) return;
     if (n <= 0 || m < 0) return;
-    AdjNode **adj = malloc((n+1) * sizeof(AdjNode*));
+    AdjNode **adj = (AdjNode**)malloc((n+1) * sizeof(AdjNode*));
+    if (!adj) return;
     for (int i = 0; i <= n; ++i) adj[i] = NULL;
     printf("Enter edges (u v w) each on new line:\n");
     for (int i = 0; i < m; ++i) {
         int u, v, w; scanf("%d %d %d", &u, &v, &w);
         if (u < 1 || u > n || v < 1 || v > n) continue;
         add_edge_basic(adj, u, v, w); /* directed/add as per need */
-        /* If undirected, also add reverse:
-           add_edge_basic(adj, v, u, w);
-        */
+        /* For undirected, also: add_edge_basic(adj, v, u, w); */
     }
     printf("Adjacency list (vertex: (neighbor,weight) ... )\n");
     for (int i = 1; i <= n; ++i) {
@@ -973,13 +1017,10 @@ void storeWeightedGraph_A1() {
 }
 
 /* Approach 2: adjacency list using tail pointers for O(1) append (keeps insertion order) */
-typedef struct AdjList {
-    AdjNode *head;
-    AdjNode *tail;
-} AdjList;
 
 void add_edge_tail(AdjList *lists, int u, int v, int w) {
-    AdjNode *nn = malloc(sizeof(AdjNode));
+    AdjNode *nn = (AdjNode*)malloc(sizeof(AdjNode));
+    if (!nn) return;
     nn->v = v; nn->w = w; nn->next = NULL;
     if (!lists[u].head) lists[u].head = lists[u].tail = nn;
     else { lists[u].tail->next = nn; lists[u].tail = nn; }
@@ -990,7 +1031,8 @@ void storeWeightedGraph_A2() {
     printf("Enter number of vertices and edges: ");
     if (scanf("%d %d", &n, &m) != 2) return;
     if (n <= 0 || m < 0) return;
-    AdjList *lists = malloc((n+1) * sizeof(AdjList));
+    AdjList *lists = (AdjList*)malloc((n+1) * sizeof(AdjList));
+    if (!lists) return;
     for (int i = 0; i <= n; ++i) { lists[i].head = lists[i].tail = NULL; }
     printf("Enter edges (u v w) each on new line:\n");
     for (int i = 0; i < m; ++i) {
@@ -1017,15 +1059,11 @@ void storeWeightedGraph_A2() {
 /* 18. Create a BST and count number of leaf nodes                            */
 /* -------------------------------------------------------------------------- */
 
-typedef struct BSTNode {
-    int val;
-    struct BSTNode *left, *right;
-} BSTNode;
-
 /* Approach 1: recursive insert + recursive count */
 BSTNode* bst_insert_rec(BSTNode *root, int x) {
     if (!root) {
-        BSTNode *n = malloc(sizeof(BSTNode));
+        BSTNode *n = (BSTNode*)malloc(sizeof(BSTNode));
+        if (!n) return NULL;
         n->val = x; n->left = n->right = NULL;
         return n;
     }
@@ -1041,7 +1079,7 @@ int bst_count_leaves_rec(BSTNode *root) {
 void bst_count_leaves_A1() {
     int n;
     printf("Enter number of nodes to insert into BST: ");
-    if (scanf("%d", &n) != 1) return;
+    if (scanf("%d", &n) != 1 || n < 0) return;
     BSTNode *root = NULL;
     printf("Enter values:\n");
     for (int i = 0; i < n; ++i) {
@@ -1064,7 +1102,9 @@ void bst_count_leaves_A1() {
 
 /* Approach 2: iterative insert + iterative count using simple stack (non-recursive) */
 BSTNode* bst_insert_iter(BSTNode *root, int x) {
-    BSTNode *nn = malloc(sizeof(BSTNode)); nn->val = x; nn->left = nn->right = NULL;
+    BSTNode *nn = (BSTNode*)malloc(sizeof(BSTNode)); 
+    if (!nn) return root;
+    nn->val = x; nn->left = nn->right = NULL;
     if (!root) return nn;
     BSTNode *cur = root, *parent = NULL;
     while (cur) {
@@ -1077,7 +1117,8 @@ BSTNode* bst_insert_iter(BSTNode *root, int x) {
 }
 int bst_count_leaves_iter(BSTNode *root) {
     if (!root) return 0;
-    BSTNode **stk = malloc(512 * sizeof(BSTNode*));
+    BSTNode **stk = (BSTNode**)malloc(512 * sizeof(BSTNode*));
+    if (!stk) return 0;
     int top = -1;
     stk[++top] = root;
     int leaves = 0;
@@ -1093,43 +1134,37 @@ int bst_count_leaves_iter(BSTNode *root) {
 void bst_count_leaves_A2() {
     int n;
     printf("Enter number of nodes to insert into BST: ");
-    if (scanf("%d", &n) != 1) return;
+    if (scanf("%d", &n) != 1 || n < 0) return;
     BSTNode *root = NULL;
     printf("Enter values:\n");
     for (int i = 0; i < n; ++i) {
         int v; scanf("%d", &v);
         if (!root) root = bst_insert_iter(NULL, v);
-        else bst_insert_iter(root, v);
+        else root = bst_insert_iter(root, v);
     }
     int leaves = bst_count_leaves_iter(root);
     printf("Number of leaf nodes = %d\n", leaves);
     /* free tree using iterative post-order simulated via two stacks */
     if (root) {
-        BSTNode **s1 = malloc(512 * sizeof(BSTNode*));
-        BSTNode **s2 = malloc(512 * sizeof(BSTNode*));
-        int t1 = -1, t2 = -1;
-        s1[++t1] = root;
-        while (t1 >= 0) {
-            BSTNode *n = s1[t1--];
-            s2[++t2] = n;
-            if (n->left) s1[++t1] = n->left;
-            if (n->right) s1[++t1] = n->right;
+        BSTNode **s1 = (BSTNode**)malloc(512 * sizeof(BSTNode*));
+        BSTNode **s2 = (BSTNode**)malloc(512 * sizeof(BSTNode*));
+        if (!s1 || !s2) { free(s1); free(s2); return; }
+        int t1s = -1, t2s = -1;
+        s1[++t1s] = root;
+        while (t1s >= 0) {
+            BSTNode *nptr = s1[t1s--];
+            s2[++t2s] = nptr;
+            if (nptr->left) s1[++t1s] = nptr->left;
+            if (nptr->right) s1[++t1s] = nptr->right;
         }
-        while (t2 >= 0) { free(s2[t2--]); }
+        while (t2s >= 0) { free(s2[t2s--]); }
         free(s1); free(s2);
     }
 }
-/* -------------------------------------------------------------------------- */
-/* 19. Binary Tree Traversals (Inorder, Preorder, Postorder)                   */
-/* -------------------------------------------------------------------------- */
 
-#include <stdio.h>
-#include <stdlib.h>
-
-typedef struct TreeNode {
-    int data;
-    struct TreeNode *left, *right;
-} TreeNode;
+/* -------------------------------------------------------------------------- */
+/* 19. Binary Tree Traversals (Inorder, Preorder)                             */
+/* -------------------------------------------------------------------------- */
 
 /* Approach 1: Recursive inorder traversal */
 void inorder_A1(TreeNode *root) {
@@ -1140,7 +1175,6 @@ void inorder_A1(TreeNode *root) {
 }
 
 /* Approach 2: Iterative inorder using array stack */
-#define MAX_STACK 100
 void inorder_A2(TreeNode *root) {
     TreeNode *stack[MAX_STACK];
     int top = -1;
@@ -1166,89 +1200,26 @@ void preorder_A3(TreeNode *root) {
 }
 
 /* -------------------------------------------------------------------------- */
-/* 20. Detect Cycle in a Graph                                                 */
+/* Tree building helpers + traversal wrappers for Problem 19                  */
 /* -------------------------------------------------------------------------- */
 
-/* Approach 1: DFS recursion (for directed graph) */
-int dfsCycle_A1(int u, int **g, int *visited, int *recStack, int V) {
-    if(!visited[u]){
-        visited[u] = 1;
-        recStack[u] = 1;
-        for(int i=0;i<V;i++){
-            if(g[u][i]){
-                if(!visited[i] && dfsCycle_A1(i,g,visited,recStack,V)) return 1;
-                else if(recStack[i]) return 1;
-            }
-        }
-    }
-    recStack[u] = 0;
-    return 0;
-}
-
-int isCyclicDFS_A1(int **g, int V) {
-    int visited[V], recStack[V];
-    for(int i=0;i<V;i++) visited[i]=recStack[i]=0;
-    for(int i=0;i<V;i++){
-        if(dfsCycle_A1(i,g,visited,recStack,V)) return 1;
-    }
-    return 0;
-}
-
-/* Approach 2: Kahn's algorithm (BFS for DAG) */
-int isCyclicKahn_A2(int **g, int V) {
-    int in_deg[V];
-    for(int i=0;i<V;i++) in_deg[i]=0;
-    for(int u=0;u<V;u++)
-        for(int v=0;v<V;v++)
-            if(g[u][v]) in_deg[v]++;
-
-    int queue[V], front=0, rear=0;
-    for(int i=0;i<V;i++) if(in_deg[i]==0) queue[rear++] = i;
-
-    int cnt=0;
-    while(front<rear){
-        int u = queue[front++];
-        cnt++;
-        for(int v=0;v<V;v++){
-            if(g[u][v]){
-                in_deg[v]--;
-                if(in_deg[v]==0) queue[rear++] = v;
-            }
-        }
-    }
-    return cnt != V;
-}
-
-/* Approach 3: Union-Find (for undirected graph) */
-int findUF_A3(int parent[], int i){
-    if(parent[i]==-1) return i;
-    return parent[i]=findUF_A3(parent,parent[i]);
-}
-
-int unionUF_A3(int parent[], int x,int y){
-    int xset=findUF_A3(parent,x), yset=findUF_A3(parent,y);
-    if(xset==yset) return 0;
-    parent[xset]=yset;
-    return 1;
-}
-
-int isCyclicUF_A3(int edges[][2], int V, int E){
-    int parent[V];
-    for(int i=0;i<V;i++) parent[i]=-1;
-    for(int i=0;i<E;i++){
-        if(!unionUF_A3(parent,edges[i][0],edges[i][1])) return 1;
-    }
-    /* ----------- Helper functions for binary tree wrappers (Problem 19) ----------- */
-
 static TreeNode* buildTreePreorder(void) {
-    int x;
-    if (scanf("%d", &x) != 1) return NULL;
-    if (x == -1) return NULL;  // -1 represents NULL
+    int val;
+    printf("Enter node value (-1 for NULL): ");
+    if (scanf("%d", &val) != 1 || val == -1) {
+        return NULL;
+    }
+
     TreeNode *node = (TreeNode*)malloc(sizeof(TreeNode));
     if (!node) return NULL;
-    node->data = x;
-    node->left  = buildTreePreorder();
+    node->data = val;
+
+    printf("Left child of %d:\n", val);
+    node->left = buildTreePreorder();
+
+    printf("Right child of %d:\n", val);
     node->right = buildTreePreorder();
+
     return node;
 }
 
@@ -1259,39 +1230,116 @@ static void freeTree(TreeNode *root) {
     free(root);
 }
 
-/* Variation 1: Inorder recursive */
+/* Variation wrappers, matched with main.c: A1=inorder (rec), A2=inorder (iter), A3=preorder */
+
 void treeTraversal_A1(void) {
-    printf("Enter nodes of binary tree in preorder (use -1 for NULL):\n");
+    printf("Build binary tree in preorder format.\n");
     TreeNode *root = buildTreePreorder();
-    printf("Inorder traversal (recursive): ");
+    printf("\nInorder Traversal (Recursive): ");
     inorder_A1(root);
     printf("\n");
     freeTree(root);
 }
 
-/* Variation 2: Inorder iterative */
 void treeTraversal_A2(void) {
-    printf("Enter nodes of binary tree in preorder (use -1 for NULL):\n");
+    printf("Build binary tree in preorder format.\n");
     TreeNode *root = buildTreePreorder();
-    printf("Inorder traversal (iterative): ");
+    printf("\nInorder Traversal (Iterative): ");
     inorder_A2(root);
     printf("\n");
     freeTree(root);
 }
 
-/* Variation 3: Preorder recursive */
 void treeTraversal_A3(void) {
-    printf("Enter nodes of binary tree in preorder (use -1 for NULL):\n");
+    printf("Build binary tree in preorder format.\n");
     TreeNode *root = buildTreePreorder();
-    printf("Preorder traversal (recursive): ");
+    printf("\nPreorder Traversal (Recursive): ");
     preorder_A3(root);
     printf("\n");
     freeTree(root);
 }
 
-/* ----------- Wrappers for cycle detection (Problem 20) ----------- */
+/* -------------------------------------------------------------------------- */
+/* 20. Detect Cycle in a Graph                                                 */
+/* -------------------------------------------------------------------------- */
 
-/* DFS on directed graph using adjacency matrix */
+/* Core algorithms (already given) */
+
+/* Approach 1: DFS recursion (for directed graph) */
+int dfsCycle_A1(int u, int **g, int *visited, int *recStack, int V) {
+    if (!visited[u]) {
+        visited[u] = 1;
+        recStack[u] = 1;
+        for (int i = 0; i < V; i++) {
+            if (g[u][i]) {
+                if (!visited[i] && dfsCycle_A1(i, g, visited, recStack, V)) return 1;
+                else if (recStack[i]) return 1;
+            }
+        }
+    }
+    recStack[u] = 0;
+    return 0;
+}
+
+int isCyclicDFS_A1(int **g, int V) {
+    int visited[V], recStack[V];
+    for (int i = 0; i < V; i++) visited[i] = recStack[i] = 0;
+    for (int i = 0; i < V; i++) {
+        if (dfsCycle_A1(i, g, visited, recStack, V)) return 1;
+    }
+    return 0;
+}
+
+/* Approach 2: Kahn's algorithm (BFS for DAG) */
+int isCyclicKahn_A2(int **g, int V) {
+    int in_deg[V];
+    for (int i = 0; i < V; i++) in_deg[i] = 0;
+    for (int u = 0; u < V; u++)
+        for (int v = 0; v < V; v++)
+            if (g[u][v]) in_deg[v]++;
+
+    int queue[V], front = 0, rear = 0;
+    for (int i = 0; i < V; i++) if (in_deg[i] == 0) queue[rear++] = i;
+
+    int cnt = 0;
+    while (front < rear) {
+        int u = queue[front++];
+        cnt++;
+        for (int v = 0; v < V; v++) {
+            if (g[u][v]) {
+                in_deg[v]--;
+                if (in_deg[v] == 0) queue[rear++] = v;
+            }
+        }
+    }
+    return cnt != V;
+}
+
+/* Approach 3: Union-Find (for undirected graph) */
+int findUF_A3(int parent[], int i) {
+    if (parent[i] == -1) return i;
+    return parent[i] = findUF_A3(parent, parent[i]);
+}
+
+int unionUF_A3(int parent[], int x, int y) {
+    int xset = findUF_A3(parent, x), yset = findUF_A3(parent, y);
+    if (xset == yset) return 0;
+    parent[xset] = yset;
+    return 1;
+}
+
+int isCyclicUF_A3(int edges[][2], int V, int E) {
+    int parent[V];
+    for (int i = 0; i < V; i++) parent[i] = -1;
+    for (int i = 0; i < E; i++) {
+        if (!unionUF_A3(parent, edges[i][0], edges[i][1])) return 1;
+    }
+    return 0;
+}
+
+/* -------- Wrapper functions for Problem 20 variations -------- */
+
+/* Variation 1: DFS-based cycle detection on directed graph (adjacency matrix) */
 void detectCycle_A1(void) {
     int V, E;
     printf("Enter number of vertices and edges (directed graph): ");
@@ -1302,7 +1350,11 @@ void detectCycle_A1(void) {
     if (!g) return;
     for (int i = 0; i < V; ++i) {
         g[i] = (int*)calloc(V, sizeof(int));
-        if (!g[i]) return;
+        if (!g[i]) {
+            for (int k = 0; k < i; ++k) free(g[k]);
+            free(g);
+            return;
+        }
     }
 
     printf("Enter %d directed edges (u v) with vertices in [0..%d]:\n", E, V - 1);
@@ -1322,14 +1374,14 @@ void detectCycle_A1(void) {
     free(g);
 }
 
-/* Union-Find on undirected graph using edge list */
+/* Variation 2: Union-Find based cycle detection on undirected graph (edge list) */
 void detectCycle_A2(void) {
     int V, E;
     printf("Enter number of vertices and edges (undirected graph): ");
     if (scanf("%d %d", &V, &E) != 2) return;
     if (V <= 0 || E < 0) return;
 
-    int (*edges)[2] = malloc(E * sizeof *edges);
+    int (*edges)[2] = (int(*)[2])malloc(E * sizeof *edges);
     if (!edges) return;
 
     printf("Enter %d edges (u v) with vertices in [0..%d]:\n", E, V - 1);
@@ -1343,7 +1395,3 @@ void detectCycle_A2(void) {
 
     free(edges);
 }
-
-    return 0;
-}
-
