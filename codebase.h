@@ -15,7 +15,7 @@ typedef struct Node {
     int data;
     struct Node* next;
 } Node;
-
+    
 typedef struct Edge {
     int u, v;
     int w;
