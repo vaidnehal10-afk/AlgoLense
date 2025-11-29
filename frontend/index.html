@@ -27,7 +27,7 @@
             <p id="problemDesc"></p>
 
             <div class="actions">
-                <button id="btnVariations" onclick="openVariations()">Variations</button>
+                <button id="btnVariations" onclick="openVariations()">Variations (Code)</button>
                 <button id="btnFlowchart" onclick="showFlowchart()">Flowchart</button>
                 <button id="btnComplexity" onclick="showComplexity()">Time &amp; Space Complexity</button>
             </div>
@@ -38,19 +38,18 @@
                 <div id="variationList" class="variation-list"></div>
             </div>
 
-            <!-- Input + Run area -->
-            <div id="inputSection" class="panel hidden">
+            <!-- Code display area -->
+            <div id="codeSection" class="panel hidden">
                 <h2 id="variationTitle"></h2>
                 <p class="hint">
-                    Enter only the actual data input asked by this variation.<br>
-                    (You do <b>not</b> need to enter any menu numbers – those are handled automatically.)
+                    Below is the <b>C code</b> for this variation (function only, no main).
                 </p>
-                <textarea id="variationInput" placeholder="Example: 12 18"></textarea>
-                <button class="run-btn" onclick="runSelectedVariation()">Run</button>
+                <pre id="codeBox"></pre>
             </div>
 
-            <h2>Output</h2>
-            <pre id="outputBox"></pre>
+            <!-- Just a title for clarity -->
+            <h2 class="section-heading">Flowchart & Complexity</h2>
+            <p class="small-hint">Use the buttons above to view the flowchart or time/space complexity.</p>
         </div>
     </main>
 </div>
