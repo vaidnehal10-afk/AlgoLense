@@ -7,27 +7,34 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Path to compiled C program
-const exePath = path.join(__dirname, "AlgoLense.exe");
+// Serve frontend
+app.use(express.static(path.join(__dirname, "frontend")));
 
 // API route to run the C program
 app.post("/run", (req, res) => {
     const input = req.body.input || "";
 
-    const process = execFile(exePath, [], (error, stdout, stderr) => {
-        if (error) {
-            res.json({ output: "ERROR: " + error.message });
+    execFile("gcc", ["main.c", "-o", "program"], (compileErr) => {
+        if (compileErr) {
+            res.json({ output: "Compilation Error: " + compileErr.message });
             return;
         }
-        res.json({ output: stdout });
-    });
 
-    process.stdin.write(input);
-    process.stdin.end();
+        const runProcess = execFile("./program", [], (error, stdout) => {
+            if (error) {
+                res.json({ output: "Runtime Error: " + error.message });
+                return;
+            }
+            res.json({ output: stdout });
+        });
+
+        runProcess.stdin.write(input);
+        runProcess.stdin.end();
+    });
 });
 
-// Start the server
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
